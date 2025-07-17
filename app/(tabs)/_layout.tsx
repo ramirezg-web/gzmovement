@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { Heart, Chrome as Home, Calendar, User, TrendingUp } from 'lucide-react-native';
+import { Heart, Chrome as Home, Calendar, User, TrendingUp, CreditCard } from 'lucide-react-native';
 
 export default function TabLayout() {
   return (
@@ -55,6 +55,15 @@ export default function TabLayout() {
           title: 'Progress',
           tabBarIcon: ({ size, color }) => (
             <TrendingUp size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="pricing"
+        options={{
+          title: 'Pricing',
+          tabBarIcon: ({ size, color }) => (
+            <CreditCard size={size} color={color} />
           ),
         }}
       />

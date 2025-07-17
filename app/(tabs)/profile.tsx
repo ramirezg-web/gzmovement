@@ -1,11 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { User, Settings, Bell, Shield, Heart, CircleHelp as HelpCircle, LogOut, ChevronRight, CreditCard as Edit3, Moon, Globe, Accessibility } from 'lucide-react-native';
+import { router } from 'expo-router';
+import { supabase } from '@/lib/supabase';
+import { getProductByPriceId } from '@/src/stripe-config';
+import { User, Settings, Bell, Shield, Heart, CircleHelp as HelpCircle, LogOut, ChevronRight, CreditCard as Edit3, Moon, Globe, Accessibility, Crown } from 'lucide-react-native';
+
+interface UserSubscription {
+  subscription_status: string;
+  price_id: string;
+  current_period_end: number;
+  cancel_at_period_end: boolean;
+}
 
 export default function ProfileScreen() {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [darkModeEnabled, setDarkModeEnabled] = useState(false);
+  const [userSubscription, setUserSubscription] = useState<UserSubscription | null>(null);
+  const [userEmail, setUserEmail] = useState<string>('');
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  const fetchUserData = async () => {
+    try {
+      // Get user info
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user?.email) {
+        setUserEmail(user.email);
+      }
+
+      // Get subscription info
+      const { data, error } = await supabase
+        .from('stripe_user_subscriptions')
+        .select('subscription_status, price_id, current_period_end, cancel_at_period_end')
+        .maybeSingle();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error fetching subscription:', error);
+        return;
+      }
+
+      setUserSubscription(data);
+    } catch (err) {
+      console.error('Error fetching user data:', err);
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      router.replace('/(auth)/login');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
 
   const profileSections = [
     {
@@ -90,6 +140,9 @@ export default function ProfileScreen() {
     currentStreak: 8,
   };
 
+  const currentPlan = userSubscription?.price_id ? getProductByPriceId(userSubscription.price_id) : null;
+  const isActiveSubscription = userSubscription && ['active', 'trialing'].includes(userSubscription.subscription_status);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -104,16 +157,43 @@ export default function ProfileScreen() {
         {/* User Card */}
         <View style={styles.userCard}>
           <View style={styles.avatar}>
-            <Text style={styles.avatarText}>J</Text>
+            <Text style={styles.avatarText}>
+              {userEmail ? userEmail.charAt(0).toUpperCase() : 'U'}
+            </Text>
           </View>
           <View style={styles.userInfo}>
-            <Text style={styles.userName}>Jordan</Text>
+            <Text style={styles.userName}>
+              {userEmail ? userEmail.split('@')[0] : 'User'}
+            </Text>
             <Text style={styles.userSubtitle}>Member since {userStats.joinDate}</Text>
             <Text style={styles.userMotivation}>
               "Every movement is a victory 💪"
             </Text>
           </View>
         </View>
+
+        {/* Subscription Status */}
+        {isActiveSubscription && currentPlan && (
+          <View style={styles.subscriptionCard}>
+            <View style={styles.subscriptionHeader}>
+              <Crown size={20} color="#14B8A6" />
+              <Text style={styles.subscriptionTitle}>Current Plan</Text>
+            </View>
+            <Text style={styles.subscriptionPlan}>{currentPlan.name}</Text>
+            {userSubscription.current_period_end && (
+              <Text style={styles.subscriptionDate}>
+                {userSubscription.cancel_at_period_end ? 'Expires' : 'Renews'} on{' '}
+                {new Date(userSubscription.current_period_end * 1000).toLocaleDateString()}
+              </Text>
+            )}
+            <TouchableOpacity 
+              style={styles.managePlanButton}
+              onPress={() => router.push('/(tabs)/pricing')}
+            >
+              <Text style={styles.managePlanText}>Manage Plan</Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
         {/* Quick Stats */}
         <View style={styles.statsContainer}>
@@ -176,7 +256,7 @@ export default function ProfileScreen() {
 
         {/* Sign Out */}
         <View style={styles.section}>
-          <TouchableOpacity style={styles.signOutButton}>
+          <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
             <LogOut size={20} color="#EF4444" />
             <Text style={styles.signOutText}>Sign Out</Text>
           </TouchableOpacity>
@@ -260,6 +340,49 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#8B5CF6',
     fontStyle: 'italic',
+  },
+  subscriptionCard: {
+    backgroundColor: '#F0FDFA',
+    marginHorizontal: 24,
+    marginBottom: 24,
+    borderRadius: 16,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: '#14B8A6',
+  },
+  subscriptionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+    gap: 8,
+  },
+  subscriptionTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#14B8A6',
+  },
+  subscriptionPlan: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#111827',
+    marginBottom: 4,
+  },
+  subscriptionDate: {
+    fontSize: 14,
+    color: '#6B7280',
+    marginBottom: 12,
+  },
+  managePlanButton: {
+    backgroundColor: '#14B8A6',
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    alignSelf: 'flex-start',
+  },
+  managePlanText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: '600',
   },
   statsContainer: {
     backgroundColor: '#FFFFFF',
