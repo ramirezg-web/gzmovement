@@ -24,7 +24,7 @@ export default function WorkoutsScreen() {
       focus: 'Full Body Strength',
       description: 'Complete transformation program building confidence and strength',
       color: '#8B5CF6',
-      accessibility: 'Progressive modifications included',
+      image: Image.resolveAssetSource(require('../../assets/images/bridge.png')).uri,
       sessions: '3-4x per week',
       featured: true,
       image: Image.resolveAssetSource(require('../../assets/images/strong.JPG')).uri,
