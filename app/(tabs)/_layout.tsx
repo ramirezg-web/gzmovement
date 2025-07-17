@@ -1,81 +1,163 @@
-import { Tabs } from 'expo-router';
-import { Heart, Chrome as Home, Calendar, User, TrendingUp, CreditCard } from 'lucide-react-native';
+import { useEffect, useState } from 'react';
+import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import { useFrameworkReady } from '@/hooks/useFrameworkReady';
+import { supabase } from '@/lib/supabase';
+import { Session } from '@supabase/supabase-js';
 
-export default function TabLayout() {
+interface UserSubscription {
+  subscription_status: string;
+  current_period_end: number;
+  cancel_at_period_end: boolean;
+}
+interface UserSubscription {
+  subscription_status: string;
+  current_period_end: number;
+  cancel_at_period_end: boolean;
+}
+interface UserSubscription {
+  subscription_status: string;
+  current_period_end: number;
+  cancel_at_period_end: boolean;
+}
+export default function RootLayout() {
+  useFrameworkReady();
+  const [session, setSession] = useState<Session | null>(null);
+  const [subscription, setSubscription] = useState<UserSubscription | null>(null);
+  const [subscription, setSubscription] = useState<UserSubscription | null>(null);
+  const [subscription, setSubscription] = useState<UserSubscription | null>(null);
+  const [subscription, setSubscription] = useState<UserSubscription | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      if (session) {
+        fetchSubscription(session.user.id);
+      } else {
+        setLoading(false);
+      }
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      if (session) {
+        fetchSubscription(session.user.id);
+      } else {
+        setSubscription(null);
+        setLoading(false);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const fetchSubscription = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('stripe_user_subscriptions')
+        .select('subscription_status, current_period_end, cancel_at_period_end')
+        .maybeSingle();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error fetching subscription:', error);
+      }
+
+      setSubscription(data);
+    } catch (err) {
+      console.error('Error fetching subscription:', err);
+    } finally {
+      if (session) {
+        fetchSubscription(session.user.id);
+      } else {
+        setLoading(false);
+      }
+    }
+  };
+
+  const hasActiveSubscription = () => {
+    if (!subscription) return false;
+    
+    const activeStatuses = ['active', 'trialing'];
+    const isActive = activeStatuses.includes(subscription.subscription_status);
+    
+    // Check if subscription hasn't expired
+      if (session) {
+        fetchSubscription(session.user.id);
+      } else {
+        setSubscription(null);
+        setLoading(false);
+      }
+    const now = Math.floor(Date.now() / 1000);
+    const notExpired = subscription.current_period_end > now;
+    
+    return isActive && notExpired;
+  };
+  const fetchSubscription = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('stripe_user_subscriptions')
+        .select('subscription_status, current_period_end, cancel_at_period_end')
+        .maybeSingle();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error fetching subscription:', error);
+      }
+
+      setSubscription(data);
+    } catch (err) {
+      console.error('Error fetching subscription:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const hasActiveSubscription = () => {
+    if (!subscription) return false;
+    
+    const activeStatuses = ['active', 'trialing'];
+    const isActive = activeStatuses.includes(subscription.subscription_status);
+    
+    // Check if subscription hasn't expired
+    const now = Math.floor(Date.now() / 1000);
+    const notExpired = subscription.current_period_end > now;
+    
+    return isActive && notExpired;
+  };
+
+  if (loading) {
+    return null;
+  }
+
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: '#14B8A6',
-        tabBarInactiveTintColor: '#6B7280',
-        tabBarStyle: {
-          backgroundColor: '#FFFFFF',
-          borderTopWidth: 1,
-          borderTopColor: '#E5E7EB',
-          paddingTop: 8,
-          paddingBottom: 8,
-          height: 70,
-        },
-        tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: '600',
-          marginTop: 4,
-        },
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ size, color }) => (
-            <Home size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="workouts"
-        options={{
-          title: 'Workouts',
-          tabBarIcon: ({ size, color }) => (
-            <Heart size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="schedule"
-        options={{
-          title: 'Schedule',
-          tabBarIcon: ({ size, color }) => (
-            <Calendar size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="progress"
-        options={{
-          title: 'Progress',
-          tabBarIcon: ({ size, color }) => (
-            <TrendingUp size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="pricing"
-        options={{
-          title: 'Pricing',
-          tabBarIcon: ({ size, color }) => (
-            <CreditCard size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: 'Profile',
-          tabBarIcon: ({ size, color }) => (
-            <User size={size} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
+    <>
+      <Stack screenOptions={{ headerShown: false }}>
+        {!session ? (
+          <>
+            <Stack.Screen name="(auth)/login" />
+            <Stack.Screen name="(auth)/signup" />
+          </>
+        ) : hasActiveSubscription() ? (
+          <>
+            <Stack.Screen name="(auth)/login" />
+            <Stack.Screen name="(auth)/signup" />
+          </>
+        ) : hasActiveSubscription() ? (
+          <>
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="success" />
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="subscription-required" />
+            <Stack.Screen name="success" />
+          </>
+        )}
+        <Stack.Screen name="+not-found" />
+      </Stack>
+      <StatusBar style="auto" />
+    </>
   );
 }

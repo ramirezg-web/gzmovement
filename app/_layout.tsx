@@ -10,9 +10,16 @@ interface UserSubscription {
   current_period_end: number;
   cancel_at_period_end: boolean;
 }
+interface UserSubscription {
+  subscription_status: string;
+  current_period_end: number;
+  cancel_at_period_end: boolean;
+}
 export default function RootLayout() {
   useFrameworkReady();
   const [session, setSession] = useState<Session | null>(null);
+  const [subscription, setSubscription] = useState<UserSubscription | null>(null);
+  const [subscription, setSubscription] = useState<UserSubscription | null>(null);
   const [subscription, setSubscription] = useState<UserSubscription | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -56,6 +63,47 @@ export default function RootLayout() {
     } catch (err) {
       console.error('Error fetching subscription:', err);
     } finally {
+      if (session) {
+        fetchSubscription(session.user.id);
+      } else {
+        setLoading(false);
+      }
+    }
+  };
+
+  const hasActiveSubscription = () => {
+    if (!subscription) return false;
+    
+    const activeStatuses = ['active', 'trialing'];
+    const isActive = activeStatuses.includes(subscription.subscription_status);
+    
+    // Check if subscription hasn't expired
+      if (session) {
+        fetchSubscription(session.user.id);
+      } else {
+        setSubscription(null);
+        setLoading(false);
+      }
+    const now = Math.floor(Date.now() / 1000);
+    const notExpired = subscription.current_period_end > now;
+    
+    return isActive && notExpired;
+  };
+  const fetchSubscription = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('stripe_user_subscriptions')
+        .select('subscription_status, current_period_end, cancel_at_period_end')
+        .maybeSingle();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error fetching subscription:', error);
+      }
+
+      setSubscription(data);
+    } catch (err) {
+      console.error('Error fetching subscription:', err);
+    } finally {
       setLoading(false);
     }
   };
@@ -72,6 +120,7 @@ export default function RootLayout() {
     
     return isActive && notExpired;
   };
+
   if (loading) {
     return null;
   }
@@ -80,6 +129,11 @@ export default function RootLayout() {
     <>
       <Stack screenOptions={{ headerShown: false }}>
         {!session ? (
+          <>
+            <Stack.Screen name="(auth)/login" />
+            <Stack.Screen name="(auth)/signup" />
+          </>
+        ) : hasActiveSubscription() ? (
           <>
             <Stack.Screen name="(auth)/login" />
             <Stack.Screen name="(auth)/signup" />
