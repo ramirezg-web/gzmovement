@@ -14,7 +14,7 @@ export default function HomeScreen() {
       focus: 'Full Body Strength',
       color: '#14B8A6',
       type: 'program',
-      image: 'https://images.pexels.com/photos/3757942/pexels-photo-3757942.jpeg?auto=compress&cs=tinysrgb&w=800',
+      image: require('@/assets/images/strong.JPG'),
     },
     {
       id: 2,
@@ -24,7 +24,7 @@ export default function HomeScreen() {
       focus: 'Lower Body & Mobility',
       color: '#8B5CF6',
       type: 'program',
-      image: 'https://images.pexels.com/photos/4056723/pexels-photo-4056723.jpeg?auto=compress&cs=tinysrgb&w=800',
+      image: require('@/assets/images/stretch.jpg'),
     },
     {
       id: 3,
@@ -34,7 +34,7 @@ export default function HomeScreen() {
       focus: 'Pull-up Mastery',
       color: '#F97316',
       type: 'program',
-      image: 'https://images.pexels.com/photos/3757376/pexels-photo-3757376.jpeg?auto=compress&cs=tinysrgb&w=800',
+      image: require('@/assets/images/strong.JPG'),
     },
   ];
 

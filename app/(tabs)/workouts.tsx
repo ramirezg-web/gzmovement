@@ -27,7 +27,7 @@ export default function WorkoutsScreen() {
       accessibility: 'Progressive modifications included',
       sessions: '3-4x per week',
       featured: true,
-      image: 'https://images.pexels.com/photos/3757942/pexels-photo-3757942.jpeg?auto=compress&cs=tinysrgb&w=800',
+      image: require('@/assets/images/strong.JPG'),
     },
     {
       id: 'thick-thighs',
@@ -41,7 +41,7 @@ export default function WorkoutsScreen() {
       accessibility: 'Chair modifications available',
       sessions: '3x per week',
       featured: true,
-      image: 'https://images.pexels.com/photos/4056723/pexels-photo-4056723.jpeg?auto=compress&cs=tinysrgb&w=800',
+      image: require('@/assets/images/stretch.jpg'),
     },
     {
       id: 'bringing-sexy-back',
@@ -55,7 +55,7 @@ export default function WorkoutsScreen() {
       accessibility: 'Band-assisted options provided',
       sessions: '2-3x per week',
       featured: true,
-      image: 'https://images.pexels.com/photos/3757376/pexels-photo-3757376.jpeg?auto=compress&cs=tinysrgb&w=800',
+      image: require('@/assets/images/strong.JPG'),
     },
   ];
 
