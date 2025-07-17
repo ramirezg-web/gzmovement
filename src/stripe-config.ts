@@ -1,82 +1,3 @@
-import { useEffect, useState } from 'react';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import { useFrameworkReady } from '@/hooks/useFrameworkReady';
-import { supabase } from '@/lib/supabase';
-import { Session } from '@supabase/supabase-js';
-
-interface UserSubscription {
-  subscription_status: string;
-  current_period_end: number;
-  cancel_at_period_end: boolean;
-}
-interface UserSubscription {
-  subscription_status: string;
-  current_period_end: number;
-  cancel_at_period_end: boolean;
-}
-export default function RootLayout() {
-  useFrameworkReady();
-  const [session, setSession] = useState<Session | null>(null);
-  const [subscription, setSubscription] = useState<UserSubscription | null>(null);
-  const [subscription, setSubscription] = useState<UserSubscription | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      if (session) {
-        fetchSubscription(session.user.id);
-      } else {
-        setLoading(false);
-      }
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      if (session) {
-        fetchSubscription(session.user.id);
-      } else {
-        setSubscription(null);
-        setLoading(false);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const fetchSubscription = async (userId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('stripe_user_subscriptions')
-        .select('subscription_status, current_period_end, cancel_at_period_end')
-        .maybeSingle();
-
-      if (error && error.code !== 'PGRST116') {
-        console.error('Error fetching subscription:', error);
-      }
-
-      setSubscription(data);
-    } catch (err) {
-      console.error('Error fetching subscription:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const hasActiveSubscription = () => {
-    if (!subscription) return false;
-    
-    const activeStatuses = ['active', 'trialing'];
-    const isActive = activeStatuses.includes(subscription.subscription_status);
-    
-    // Check if subscription hasn't expired
-    const now = Math.floor(Date.now() / 1000);
-    const notExpired = subscription.current_period_end > now;
-  }
-}
 export interface StripeProduct {
   id: string;
   name: string;
@@ -90,7 +11,7 @@ export const stripeProducts: StripeProduct[] = [
   {
     id: 'gz-subscription',
     name: 'GZ Movement Subscription',
-    description: 'Monthly access to all workouts and programs',
+    description: 'Monthly access to all workouts and programs + 7-day free trial',
     price: '$9.99',
     priceId: 'price_1Rld87B3EpSJW5YnV8tOpDWp',
     mode: 'subscription',
