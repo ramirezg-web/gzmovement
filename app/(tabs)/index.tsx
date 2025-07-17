@@ -14,7 +14,7 @@ export default function HomeScreen() {
       focus: 'Full Body Strength',
       color: '#14B8A6',
       type: 'program',
-      image: require('../../assets/images/strong.JPG'),
+      image: require('../../assets/images/bench.jpg'),
     },
     {
       id: 2,
@@ -34,7 +34,7 @@ export default function HomeScreen() {
       focus: 'Pull-up Mastery',
       color: '#F97316',
       type: 'program',
-      image: require('../../assets/images/strong.JPG'),
+      image: require('../../assets/images/pull.png'),
     },
   ];
 
