@@ -55,7 +55,7 @@ export default function WorkoutsScreen() {
       accessibility: 'Band-assisted options provided',
       sessions: '2-3x per week',
       featured: true,
-      image: require('../assets/images/pull.png'),
+      image: require('../../assets/images/pull.png'),
     },
   ];
 
