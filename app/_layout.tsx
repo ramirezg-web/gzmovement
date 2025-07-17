@@ -34,8 +34,6 @@ export default function RootLayout() {
   useFrameworkReady();
   const [session, setSession] = useState<Session | null>(null);
   const [subscription, setSubscription] = useState<UserSubscription | null>(null);
-  const [subscription, setSubscription] = useState<UserSubscription | null>(null);
-  const [subscription, setSubscription] = useState<UserSubscription | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
