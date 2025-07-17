@@ -75,6 +75,8 @@ export default function RootLayout() {
     // Check if subscription hasn't expired
     const now = Math.floor(Date.now() / 1000);
     const notExpired = subscription.current_period_end > now;
+  }
+}
 export interface StripeProduct {
   id: string;
   name: string;
