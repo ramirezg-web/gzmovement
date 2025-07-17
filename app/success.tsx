@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { CheckCircle, ArrowRight } from 'lucide-react-native';
+import { CircleCheck as CheckCircle, ArrowRight } from 'lucide-react-native';
 
 export default function SuccessScreen() {
   const [countdown, setCountdown] = useState(5);
