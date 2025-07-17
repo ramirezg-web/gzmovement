@@ -27,7 +27,7 @@ export default function WorkoutsScreen() {
       image: Image.resolveAssetSource(require('../../assets/images/bridge.png')).uri,
       sessions: '3-4x per week',
       featured: true,
-      image: Image.resolveAssetSource(require('../../assets/images/strong.JPG')).uri,
+      image: Image.resolveAssetSource(require('../../assets/images/bridge.png')).uri,
     },
     {
       id: 'thick-thighs',
@@ -55,7 +55,7 @@ export default function WorkoutsScreen() {
       accessibility: 'Band-assisted options provided',
       sessions: '2-3x per week',
       featured: true,
-      image: Image.resolveAssetSource(require('../../assets/images/strong.JPG')).uri,
+      image: Image.resolveAssetSource(require('../../assets/images/pull.png')).uri,
     },
   ];
 
