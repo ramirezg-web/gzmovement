@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Clock, Users, Zap, Heart, Filter, Search, Star } from 'lucide-react-native';
 
@@ -27,7 +27,7 @@ export default function WorkoutsScreen() {
       accessibility: 'Progressive modifications included',
       sessions: '3-4x per week',
       featured: true,
-      image: require('../../assets/images/back.jpg'),
+      image: Image.resolveAssetSource(require('../../assets/images/strong.JPG')).uri,
     },
     {
       id: 'thick-thighs',
@@ -41,7 +41,7 @@ export default function WorkoutsScreen() {
       accessibility: 'Chair modifications available',
       sessions: '3x per week',
       featured: true,
-      image: require('../../assets/images/ttsl.png'),
+      image: Image.resolveAssetSource(require('../../assets/images/stretch.jpg')).uri,
     },
     {
       id: 'bringing-sexy-back',
@@ -55,7 +55,7 @@ export default function WorkoutsScreen() {
       accessibility: 'Band-assisted options provided',
       sessions: '2-3x per week',
       featured: true,
-      image: require('../../assets/images/pull.png'),
+      image: Image.resolveAssetSource(require('../../assets/images/strong.JPG')).uri,
     },
   ];
 
@@ -94,7 +94,7 @@ export default function WorkoutsScreen() {
       description: 'Start your day with intention',
       color: '#F97316',
       accessibility: 'Chair options available',
-      image: require('../../assets/images/relax.png'),
+      image: Image.resolveAssetSource(require('../../assets/images/relax.png')).uri,
     },
     {
       id: 4,
