@@ -26,7 +26,7 @@ export default function WorkoutsScreen() {
       color: '#8B5CF6',
       sessions: '3-4x per week',
       featured: true,
-      image: require('../../assets/images/bridge.png'),
+      image: 'https://images.pexels.com/photos/3757942/pexels-photo-3757942.jpeg?auto=compress&cs=tinysrgb&w=800',
     },
     {
       id: 'thick-thighs',
@@ -40,7 +40,7 @@ export default function WorkoutsScreen() {
       accessibility: 'Chair modifications available',
       sessions: '3x per week',
       featured: true,
-      image: require('../../assets/images/stretch.jpg'),
+      image: 'https://images.pexels.com/photos/3822622/pexels-photo-3822622.jpeg?auto=compress&cs=tinysrgb&w=800',
     },
     {
       id: 'bringing-sexy-back',
@@ -54,7 +54,7 @@ export default function WorkoutsScreen() {
       accessibility: 'Band-assisted options provided',
       sessions: '2-3x per week',
       featured: true,
-      image: require('../../assets/images/pull.png'),
+      image: 'https://images.pexels.com/photos/3822906/pexels-photo-3822906.jpeg?auto=compress&cs=tinysrgb&w=800',
     },
   ];
 
@@ -93,7 +93,7 @@ export default function WorkoutsScreen() {
       description: 'Start your day with intention',
       color: '#F97316',
       accessibility: 'Chair options available',
-      image: Image.resolveAssetSource(require('../../assets/images/relax.png')).uri,
+      image: 'https://images.pexels.com/photos/3757942/pexels-photo-3757942.jpeg?auto=compress&cs=tinysrgb&w=800',
     },
     {
       id: 4,
