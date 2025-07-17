@@ -14,7 +14,7 @@ export default function HomeScreen() {
       focus: 'Full Body Strength',
       color: '#14B8A6',
       type: 'program',
-      image: Image.resolveAssetSource(require('../../assets/images/bridge.png')).uri,
+      image: require('../../assets/images/bridge.png'),
     },
     {
       id: 2,
@@ -24,7 +24,7 @@ export default function HomeScreen() {
       focus: 'Lower Body & Mobility',
       color: '#8B5CF6',
       type: 'program',
-      image: Image.resolveAssetSource(require('../../assets/images/stretch.jpg')).uri,
+      image: require('../../assets/images/stretch.jpg'),
     },
     {
       id: 3,
@@ -34,7 +34,7 @@ export default function HomeScreen() {
       focus: 'Pull-up Mastery',
       color: '#F97316',
       type: 'program',
-      image: Image.resolveAssetSource(require('../../assets/images/pull.png')).uri,
+      image: require('../../assets/images/relax.png'),
     },
   ];
 

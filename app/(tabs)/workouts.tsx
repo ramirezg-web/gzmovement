@@ -24,10 +24,9 @@ export default function WorkoutsScreen() {
       focus: 'Full Body Strength',
       description: 'Complete transformation program building confidence and strength',
       color: '#8B5CF6',
-      image: Image.resolveAssetSource(require('../../assets/images/bridge.png')).uri,
       sessions: '3-4x per week',
       featured: true,
-      image: Image.resolveAssetSource(require('../../assets/images/bridge.png')).uri,
+      image: require('../../assets/images/bridge.png'),
     },
     {
       id: 'thick-thighs',
@@ -41,7 +40,7 @@ export default function WorkoutsScreen() {
       accessibility: 'Chair modifications available',
       sessions: '3x per week',
       featured: true,
-      image: Image.resolveAssetSource(require('../../assets/images/stretch.jpg')).uri,
+      image: require('../../assets/images/stretch.jpg'),
     },
     {
       id: 'bringing-sexy-back',
@@ -55,7 +54,7 @@ export default function WorkoutsScreen() {
       accessibility: 'Band-assisted options provided',
       sessions: '2-3x per week',
       featured: true,
-      image: Image.resolveAssetSource(require('../../assets/images/pull.png')).uri,
+      image: require('../../assets/images/pull.png'),
     },
   ];
 
