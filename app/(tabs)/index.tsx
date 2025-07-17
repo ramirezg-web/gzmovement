@@ -14,7 +14,7 @@ export default function HomeScreen() {
       focus: 'Full Body Strength',
       color: '#14B8A6',
       type: 'program',
-      image: require('@/assets/images/strong.JPG'),
+      image: require('../../assets/images/strong.JPG'),
     },
     {
       id: 2,
@@ -24,7 +24,7 @@ export default function HomeScreen() {
       focus: 'Lower Body & Mobility',
       color: '#8B5CF6',
       type: 'program',
-      image: require('@/assets/images/stretch.jpg'),
+      image: require('../../assets/images/stretch.jpg'),
     },
     {
       id: 3,
@@ -34,7 +34,7 @@ export default function HomeScreen() {
       focus: 'Pull-up Mastery',
       color: '#F97316',
       type: 'program',
-      image: require('@/assets/images/strong.JPG'),
+      image: require('../../assets/images/strong.JPG'),
     },
   ];
 

@@ -27,7 +27,7 @@ export default function WorkoutsScreen() {
       accessibility: 'Progressive modifications included',
       sessions: '3-4x per week',
       featured: true,
-      image: require('@/assets/images/back.jpg'),
+      image: require('../../assets/images/back.jpg'),
     },
     {
       id: 'thick-thighs',
@@ -41,7 +41,7 @@ export default function WorkoutsScreen() {
       accessibility: 'Chair modifications available',
       sessions: '3x per week',
       featured: true,
-      image: require('@/assets/images/ttsl.png'),
+      image: require('../../assets/images/ttsl.png'),
     },
     {
       id: 'bringing-sexy-back',
@@ -55,7 +55,7 @@ export default function WorkoutsScreen() {
       accessibility: 'Band-assisted options provided',
       sessions: '2-3x per week',
       featured: true,
-      image: require('@/assets/images/pull.png'),
+      image: require('../../assets/images/pull.png'),
     },
   ];
 
@@ -94,7 +94,7 @@ export default function WorkoutsScreen() {
       description: 'Start your day with intention',
       color: '#F97316',
       accessibility: 'Chair options available',
-      image: require('@/assets/images/relax.png'),
+      image: require('../../assets/images/relax.png'),
     },
     {
       id: 4,
